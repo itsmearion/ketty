@@ -8,7 +8,8 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from utils.escape import escape_markdown 
 from config import ADMIN_GROUP_ID
 
-@Client.on_message(filters.command("start") & filters.private) async def start_handler(client, message): chat_id = message.chat.id
+@Client.on_message(filters.command("start") & filters.private) 
+async def start_handler(client, message): chat_id = message.chat.id
 
 try:
     # Teks pertama
