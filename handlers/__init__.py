@@ -1,4 +1,4 @@
-from .start_handler import start_handler
+from .start_handler import start_handler_fn
 from .format_handler import format_handler
 from .admin_to_user import admin_to_user_handler
 
