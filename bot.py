@@ -5,17 +5,18 @@ from utils.logger import setup_logger
 from utils.error_handler import on_error
 
 setup_logger()
+
 app = Client(
     "gunda_bot",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    parse_mode="MarkdownV2"
+    parse_mode="MarkdownV2"  # Global parse_mode
 )
 
 register_handlers(app)
 
-# Setup global error handler
+# Handler error global
 app.add_handler(None, group=-1)(on_error)
 
 if __name__ == "__main__":
