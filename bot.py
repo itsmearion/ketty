@@ -1,6 +1,6 @@
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
-from handlers import register_handlers
+from handlers.start_handler import start_handler_fn
 from utils.logger import setup_logger
 from utils.error_handler import on_error
 from pyrogram.errors import RPCError
