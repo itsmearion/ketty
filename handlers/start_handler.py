@@ -3,8 +3,10 @@ import logging
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from utils.escape import escape_markdown
+from pyrogram.handlers import MessageHandler
 
-async def start_handler(client, message: Message):
+# Ini fungsi yang ngerjain
+async def start_handler_fn(client, message: Message):
     chat_id = message.chat.id
 
     try:
@@ -32,5 +34,5 @@ async def start_handler(client, message: Message):
     except Exception as e:
         logging.error(f"Terjadi kesalahan saat start: {e}")
 
-from pyrogram.handlers import MessageHandler
-start_handler = MessageHandler(start_handler, filters.command("start") & filters.private)
+# Ini object handler yang di register ke app
+start_handler = MessageHandler(start_handler_fn, filters.command("start") & filters.private)
