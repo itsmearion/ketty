@@ -1,19 +1,29 @@
+import logging
 from pyrogram import filters
+from pyrogram.types import Message
 from config import ADMIN_GROUP_ID
-from utils.escape import escape_markdown
 
-def user_to_admin_handler(app):
-    @app.on_message(filters.private & filters.text & ~filters.command(["start"]))
-    async def forward_user_message(client, message):
-        user = message.from_user
-        text = escape_markdown(message.text)
-        caption = (
-            f"*New Message from {escape_markdown(user.first_name)}*\n\n"
-            f"{text}\n\n"
-            f"User ID: `{user.id}`"
-        )
+async def admin_to_user_handler_fn(client, message: Message):
+    if message.chat.id != ADMIN_GROUP_ID:
+        return
+
+    if not message.reply_to_message or not message.reply_to_message.text:
+        return
+
+    original_text = message.reply_to_message.text
+    if "UserID:" not in original_text:
+        return
+
+    try:
+        user_id = int(original_text.split("UserID:")[1].strip())
 
         await client.send_message(
-            ADMIN_GROUP_ID,
-            caption
+            user_id,
+            message.text
         )
+
+    except Exception as e:
+        logging.error(f"Terjadi kesalahan saat membalas ke user: {e}")
+
+from pyrogram.handlers import MessageHandler
+admin_to_user_handler = MessageHandler(admin_to_user_handler_fn, filters.reply & filters.text)
