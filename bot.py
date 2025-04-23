@@ -3,6 +3,7 @@ from config import API_ID, API_HASH, BOT_TOKEN
 from handlers import register_handlers
 from utils.logger import setup_logger
 from utils.error_handler import on_error
+from pyrogram.errors import RPCError
 
 setup_logger()
 
@@ -17,7 +18,17 @@ app = Client(
 register_handlers(app)
 
 # Handler error global
-app.add_handler(None, group=-1)(on_error)
+
+async def on_error(client, update, error):
+    if isinstance(error, RPCError):
+        # khusus RPC error
+        logging.error(f"RPCError: {error}")
+    else:
+        # error umum
+        logging.error(f"Unhandled error: {error}")
+
+app.add_handler(MessageHandler(start_handler_fn, filters.command("start")))
+app.add_error_handler(on_error)
 
 if __name__ == "__main__":
     app.run()
