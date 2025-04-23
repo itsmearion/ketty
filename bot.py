@@ -5,6 +5,8 @@ from utils.logger import setup_logger
 from utils.error_handler import on_error
 from pyrogram.errors import RPCError
 from pyrogram.handlers import MessageHandler
+from handlers import register_handlers
+
 
 setup_logger()
 
@@ -30,6 +32,8 @@ async def on_error(client, update, error):
 
 app.add_handler(MessageHandler(start_handler_fn, filters.command("start")))
 app.add_error_handler(on_error)
+
+register_handlers(app)
 
 if __name__ == "__main__":
     app.run()
