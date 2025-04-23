@@ -4,6 +4,7 @@ from handlers import register_handlers
 from utils.logger import setup_logger
 from utils.error_handler import on_error
 from pyrogram.errors import RPCError
+from pyrogram.handlers import MessageHandler
 
 setup_logger()
 
